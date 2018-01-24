@@ -1,41 +1,71 @@
-//Define var for array containing objects for words and their letters (each word followed by 
-//their letters is a new object)
+//VARIABLES//
+//Define array of words
+var words = [
+	"mint", 
+	"chocolate", 
+	"strawberry", 
+	"pistachio"
+];
 
-var wordsToBeGuessed = [
-	{
-		word: ,
-		letters: ,
-	},
-	{
-		word: ,
-		letters: ,
-	},
-	{
-		word: ,
-		letters: ,
-	},
-	{
-		word: ,
-		letters: ,
-	},
-]
+//chooses random word each time, also makes variable for each single word.
+var word = words[Math.floor(Math.random() * words.length)];
 
-//Define var for wins, current word, guesses remaining, already guessed, pics of guess after each win
+//answer array. makes _ same amount of letters as word; loops through each word
+var answerArray = [];
+	for (var i = 0; i < word.length; i++) {
+		answerArray[i]= " _ ";
+	};
 
-//Create functions to render words to be guessed. if/else statement in function (if keep going,
-// else stop game)
 
+document.querySelector("#currentWord").innerHTML = answerArray;
+
+//Define var for wins, guesses remaining, already guessed.
+
+var wins = 0;
+var guessesRem = 15;
+var alreadyGuessed = 0;
+
+//FUNCTIONS//
 //Create function that keeps score of wins.
+function updateWins() {
+	document.querySelector("#wins").innerHTML = "Wins: " + wins;
+};
 
-//if a letter is guessed already, guesses don't go down.
+//function keeps score of guesses remaining guesses
+function remaining() {
+	document.querySelector("#guessesRemaining").innerHTML = "Guesses Remaining: " + guessesRem;
+}
 
-//MAIN PROCESS
-//Call functions to start game
-//When key is pressed start game (document.keyup)
-//if no more words to guess, stop w return
+//shows the answer and the join method 
+function answer() {
+	document.querySelector("#currentWord").innerHTML = answerArray.join(" ").toUpperCase();;
+}
 
-//if the user input === to any of the letters, show the letter in current word,
-// ++wins,
-//else --guessesRemaining, show key typed in already guessed letters
+//making a reset function
+function reset() {
+	updateWins();
+	remaining();
+	answer();
+}
 
-//Increment each word to be guessed, render.
+
+//MAIN//
+//call functions
+updateWins();
+remaining();
+answer();
+
+//Run game
+document.onkeyup = function (event) {
+	var userInput = event.key.toLowerCase();
+	//for loop to loop through each letter of random word to match with the user input
+	for(j = 0; j < word.length; j++) {
+		if (userInput === word.charAt(j)) {
+			answerArray[j] = userInput;
+			answer();
+		} else if (userInput != word.charAt(j)) {
+			guessesRem--;
+			remaining();
+		}
+	}
+};

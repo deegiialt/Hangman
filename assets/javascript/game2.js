@@ -26,6 +26,12 @@ var hangmanGame = {
 	wins: 0,
 
 	//Function called when page loads
-	
+	setupGame: function() {
+		//Loops through object wordsToPick and picks a random word
+		var objKeys = Object.keys(this.wordsToPick);
+		this.wordInPlay = objKeys[Math.floor(Math.random() * objKeys.lengeth)];
+		//Split word into letters
+		this.lettersOfTheWord = this.wordInPlay.split("");
+	}
 
 };

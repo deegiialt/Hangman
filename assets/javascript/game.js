@@ -6,6 +6,7 @@ var words = [
 	"strawberry", 
 	"pistachio"
 ];
+var letterMatched= false;
 
 //chooses random word each time, also makes variable for each single word.
 var word = words[Math.floor(Math.random() * words.length)];
@@ -15,6 +16,7 @@ var answerArray = [];
 	for (var i = 0; i < word.length; i++) {
 		answerArray[i]= " _ ";
 	};
+
 
 
 document.querySelector("#currentWord").innerHTML = answerArray;
@@ -38,9 +40,25 @@ function remaining() {
 
 //shows the answer and the join method 
 function answer() {
-	document.querySelector("#currentWord").innerHTML = answerArray.join(" ").toUpperCase();;
+	document.querySelector("#currentWord").innerHTML = answerArray.join(" ").toUpperCase();
 }
 
+function removeWord() {
+	words.splice(word, 1);
+}
+
+function newGame() {
+	reset();
+	
+	var letterMatched= false;
+	var word = words[Math.floor(Math.random() * words.length)];
+	var answerArray = [];
+		for (var i = 0; i < word.length; i++) {
+			answerArray[i]= " _ ";
+		};
+	document.querySelector("#currentWord").innerHTML = answerArray.join(" ");
+	
+}
 //making a reset function
 function reset() {
 	updateWins();
@@ -54,18 +72,36 @@ function reset() {
 updateWins();
 remaining();
 answer();
+newGame();
 
 //Run game
 document.onkeyup = function (event) {
 	var userInput = event.key.toLowerCase();
 	//for loop to loop through each letter of random word to match with the user input
+	var letterMatched=false;
 	for(j = 0; j < word.length; j++) {
 		if (userInput === word.charAt(j)) {
+			letterMatched=true;
 			answerArray[j] = userInput;
 			answer();
-		} else if (userInput != word.charAt(j)) {
+		}
+
+	}
+
+	if(answerArray.indexOf(" _ ") === -1 ) {
+		wins++;
+		newGame();
+		guessesRem();
+		// alert(wins);
+	}
+
+		if (letterMatched === false) {
 			guessesRem--;
 			remaining();
 		}
-	}
+
+		if (guessesRem == 0) {
+			alert("GAME OVER");
+			reset();
+		}
 };
